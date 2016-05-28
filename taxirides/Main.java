@@ -14,4 +14,8 @@ public class Main {
     sim.showStatistics();
   }
 
+  
+  // hoi tiko
+  
+  
 }
