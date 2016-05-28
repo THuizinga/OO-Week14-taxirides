@@ -24,6 +24,7 @@ public class Simulation {
     private Taxi[] taxis;
     private Train train;
     private Station station;
+    private ExecutorService taxiHandler;
     
     private boolean hasEnded = false;
     private int nextTaxi = 0;
@@ -31,6 +32,7 @@ public class Simulation {
     public Simulation() {
         station = new Station();
         taxis = new Taxi[NROFTAXIS];
+        taxiHandler = Executors.newCachedThreadPool();
         for (int i = 0; i < NROFTAXIS; i++) {
             taxis[i] = i < NROFSMALLTAXIS ? new Taxi(i + 1, CAPACITYSMALL, TIMESMALL, station) : new Taxi(i + 1,
                     CAPACITYLARGE, TIMELARGE, station);
@@ -39,13 +41,14 @@ public class Simulation {
     }
     
     public void step() {
-        if (station.getNrOfPassengersWaiting() > 0) {   
-            taxis[nextTaxi].takePassengers();
+        if (station.getNrOfPassengersWaiting() > 0) {
+            taxiHandler.submit(new TaxiDriver(taxis[nextTaxi]));
             nextTaxi = (nextTaxi + 1) % NROFTAXIS;
         } else if (train.getNrOfTrips() < TRAIN_TRIPS) {
             train.getIn(Util.getRandomNumber(MIN_TRAVELLERS, MAX_TRAVELLERS));
             train.getOff();
         } else {
+            taxiHandler.shutdown();
             train.closeStation();
             hasEnded = true;
         }
