@@ -36,6 +36,12 @@ public class Station {
         return nrOfPassengersAtStation;
     }
     
+    public synchronized int tryPassengers(int taxiCapacity){
+        int passengersToTake = Math.min(taxiCapacity, nrOfPassengersAtStation);
+        nrOfPassengersAtStation -= passengersToTake;
+        return passengersToTake;
+    }
+
     public void close() {
         isClosed = true;
     }
