@@ -35,17 +35,10 @@ Use the classes of the sequential version as the basis for a new concurrent vers
 
 ## 2: Stopping Threads
 Although each Thread has a method stop, this is not the way to stop a thread. See the lecture
-and https://docs.oracle.com/javase/8/docs/technotes/guides/ concurrency/
-threadPrimitiveDeprecation.html for more details. The proper way to stop a thread in a
-safe way is that the run method checks every now and then whether it is supposed to stop. When
-this is the case, it should stop in such a way that all other threads interacting with this thread are
-not harmed. A simple way to indicate that a thread has to stop is by setting a boolean attribute of
-the task.
+and https://docs.oracle.com/javase/8/docs/technotes/guides/concurrency/threadPrimitiveDeprecation.html for more details. The proper way to stop a thread in a safe way is that the run method checks every now and then whether it is supposed to stop. When this is the case, it should stop in such a way that all other threads interacting with this thread are not harmed. A simple way to indicate that a thread has to stop is by setting a boolean attribute of the task.
 
 ### Assignment2: 
-Make a JavaFX program with an interface as depicted in Figure 2. When the start button is
-pressed the JavaFX program starts computing the Ackermann function with the arguments specified
-in the interface.
+Make a JavaFX program with an interface as depicted in Figure 2. When the start button is pressed the JavaFX program starts computing the Ackermann function with the arguments specified in the interface.
 
 
 
@@ -59,23 +52,7 @@ The Ackermann function is defined as:
 			
 
 
-Since the computation of such an Ackermann number can take very much time, you should
-use a separate thread for the computation in order to keep your program responsive.
-Only the JavaFX thread is allowed to change the nodes in the interface. An attempt of any
-other thread to change this will cause an exception. Hence, the task computing the Ackermann
-number cannot set the result. The thread executing the event handler cannot wait until the
-computation is finished, this would make your program unresponsive. The proper solution is
-that the computation thread asks the JavaFX thread to update the result field. JavaFX provides
-Platform.runLater(Runnable runnable) for this purpose. It will run the specified Runnable on
-the JavaFX Application Thread at some unspecified time in the future.
-Pressing the stop button should stop the running computation of the Ackermann number. Ensure
-that there appears a message in the interface indicating that the computation is interrupted.
-The computation of an Ackermann number can consume huge amounts of stack space due
-to very deep nested recursive calls. When the stack space is exhausted the thread will throw an
-exception. In order to handle such an exception, you use the method
-setUncaughtExceptionHandler(Thread.UncaughtExceptionHandler eh)
-of the thread. The interface UncaughtExceptionHandler just contains the method
-void uncaughtException(Thread t, Throwable e) ;
+Since the computation of such an Ackermann number can take very much time, you should use a separate thread for the computation in order to keep your program responsive. Only the JavaFX thread is allowed to change the nodes in the interface. An attempt of any other thread to change this will cause an exception. Hence, the task computing the Ackermann number cannot set the result. The thread executing the event handler cannot wait until the computation is finished, this would make your program unresponsive. The proper solution is that the computation thread asks the JavaFX thread to update the result field. JavaFX provides Platform.runLater(Runnable runnable) for this purpose. It will run the specified Runnable on the JavaFX Application Thread at some unspecified time in the future. Pressing the stop button should stop the running computation of the Ackermann number. Ensure that there appears a message in the interface indicating that the computation is interrupted. The computation of an Ackermann number can consume huge amounts of stack space due to very deep nested recursive calls. When the stack space is exhausted the thread will throw an exception. In order to handle such an exception, you use the method setUncaughtExceptionHandler(Thread.UncaughtExceptionHandler eh) of the thread. The interface UncaughtExceptionHandler just contains the method void uncaughtException(Thread t, Throwable e) ;
 
 
 ## 3: Using Worker and Task
