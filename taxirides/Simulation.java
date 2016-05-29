@@ -2,6 +2,7 @@ package taxirides;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -49,6 +50,12 @@ public class Simulation {
             train.getOff();
         } else {
             taxiHandler.shutdown();
+            try {
+				taxiHandler.awaitTermination(100, TimeUnit.MICROSECONDS);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             train.closeStation();
             hasEnded = true;
         }
